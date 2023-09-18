@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -88,6 +89,17 @@ public record UserController() {
                 .filter(user -> user.getId() != id)
                 .collect(Collectors.toList());
 
+        return ResponseEntity.ok(users);
+    }
+
+    @PatchMapping("/users/{id}/age/{age}")
+    public ResponseEntity<List<User>> updateUserAge(@PathVariable int id, @PathVariable int age) {
+        for (User user : users) {
+            if (user.getId() == id) {
+                user.setAge(age);
+                break;
+            }
+        }
         return ResponseEntity.ok(users);
     }
 }
