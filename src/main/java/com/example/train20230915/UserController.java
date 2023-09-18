@@ -100,9 +100,7 @@ public record UserController() {
                 break;
             }
         }
-        
         return ResponseEntity.ok(users);
-
     }
 }
 
