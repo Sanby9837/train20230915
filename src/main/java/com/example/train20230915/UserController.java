@@ -101,6 +101,7 @@ public record UserController() {
             }
         }
         return ResponseEntity.ok(users);
+        
     }
 }
 
