@@ -1,10 +1,9 @@
 package com.example.train20230915;
 
 public class User {
-    private String name;
-    private int age;
-
-    private  int id;
+    public String name;
+    public int age;
+    public  int id;
 
     public User(int id,String name, int age) {
         this.name = name;

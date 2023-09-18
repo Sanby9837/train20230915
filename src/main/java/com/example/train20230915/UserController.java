@@ -9,15 +9,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+
+
 @RestController
 @RequestMapping("/users")
 public record UserController() {
 
     public UserController() {
-        users.add(new User(1,"Jason", 20));
-        users.add(new User(2,"Alan", 22));
-        users.add(new User(3,"David", 21));
-        users.add(new User(4,"Monika", 20));
+        users.add(new User(1, "Jason", 20));
+        users.add(new User(2, "Alan", 22));
+        users.add(new User(3, "David", 21));
+        users.add(new User(4, "Monika", 20));
     }
 
     static List<User> users = new ArrayList<>();
@@ -54,10 +56,17 @@ public record UserController() {
     }
 
 
-
     @PostMapping
-    public ResponseEntity<String> create() {
-        return ResponseEntity.ok("4567");
+    public ResponseEntity<List<User>> create(@RequestBody User request) {
+        //想讓ID是最大號塞進去，所以不管request ID是多少，都重新確認最大號ID+1
+        int newId = users.stream()
+                .mapToInt(User::getId)
+                .max()
+                .orElse(0) + 1;
+
+        User newUser= new User(newId, request.getName(), request.getAge());
+        users.add(newUser);
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
