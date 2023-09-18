@@ -1,9 +1,9 @@
 package com.example.train20230915;
 
 public class User {
-    public String name;
-    public int age;
-    public  int id;
+    private String name;
+    private int age;
+    private  int id;
 
     public User(int id,String name, int age) {
         this.name = name;

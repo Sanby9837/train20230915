@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
 
 
 @RestController
@@ -55,7 +55,6 @@ public record UserController() {
         return ResponseEntity.ok(names);
     }
 
-
     @PostMapping
     public ResponseEntity<List<User>> create(@RequestBody User request) {
         //想讓ID是最大號塞進去，所以不管request ID是多少，都重新確認最大號ID+1
@@ -64,14 +63,22 @@ public record UserController() {
                 .max()
                 .orElse(0) + 1;
 
-        User newUser= new User(newId, request.getName(), request.getAge());
+        User newUser = new User(newId, request.getName(), request.getAge());
         users.add(newUser);
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> update() {
-        return ResponseEntity.ok("");
+    @PutMapping
+    public ResponseEntity<List<User>> update(@RequestBody User request) {
+        // 根據ID去update user的 name 和 age
+        for (User user : users) {
+            if (user.getId() == request.getId()) {
+                user.setName(request.getName());
+                user.setAge(request.getAge());
+                break;
+            }
+        }
+        return ResponseEntity.ok(users);
     }
 
     @DeleteMapping("/{id}")
