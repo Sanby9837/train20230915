@@ -82,8 +82,13 @@ public record UserController() {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<List<User>> delete(@PathVariable int id) {
+        // 根據ID刪除user
+        users = users.stream()
+                .filter(user -> user.getId() != id)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
     }
 }
 
