@@ -26,6 +26,7 @@ public record UserController() {
     static List<User> users = new ArrayList<>();
 
     @GetMapping
+    //http://localhost:8080/users
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(users);
     }
@@ -47,7 +48,7 @@ public record UserController() {
     // 網址後加上/，再加上值
     // http://localhost:8080/users/findById/1
     public ResponseEntity<List<String>> findById(@PathVariable int id) {
-        // 根据Id篩選顯示姓名
+        // 根據Id篩選顯示姓名
         List<String> names = users.stream()
                 .filter(user -> user.getId() == id)
                 .map(User::getName)
@@ -57,7 +58,12 @@ public record UserController() {
     }
 
     @GetMapping("/findUserByRequestBody")
+    //http://localhost:8080/users/findUserByRequestBody
+    //    {
+    //        "age":20
+    //    }
     public ResponseEntity<List<User>> findUserByRequestBody(@RequestBody Map<String, Integer> requestBody) {
+        //根據年齡顯示符合的使用者姓名
         int age = requestBody.get("age");
 
         List<User> findUsers = users.stream()
@@ -68,6 +74,12 @@ public record UserController() {
     }
 
     @PostMapping
+    //http://localhost:8080/users
+    //    {
+    //        "id":1,
+    //            "age":20,
+    //            "name":"test-post"
+    //    }
     public ResponseEntity<List<User>> create(@RequestBody User request) {
         //想讓ID是最大號塞進去，所以不管request ID是多少，都重新確認最大號ID+1
         int newId = users.stream()
@@ -81,6 +93,12 @@ public record UserController() {
     }
 
     @PutMapping
+    //http://localhost:8080/users
+    //    {
+    //        "id":1,
+    //            "age":20,
+    //            "name":"test-put"
+    //    }
     public ResponseEntity<List<User>> update(@RequestBody User request) {
         // 根據ID去update user的 name 和 age
         for (User user : users) {
@@ -94,6 +112,7 @@ public record UserController() {
     }
 
     @DeleteMapping("/{id}")
+    //http://localhost:8080/users/1
     public ResponseEntity<List<User>> delete(@PathVariable int id) {
         // 根據ID刪除user
         users = users.stream()
@@ -104,6 +123,10 @@ public record UserController() {
     }
 
     @DeleteMapping("/DeleteUserByRequestBody")
+    //http://localhost:8080/users/DeleteUserByRequestBody
+    //    {
+    //        "id":3,
+    //    }
     public ResponseEntity<List<User>> DeleteMapping(@RequestBody User request) {
         // 根據ID刪除user
         users = users.stream()
@@ -114,6 +137,7 @@ public record UserController() {
     }
 
     @PatchMapping("/{id}/age/{age}")
+    //http://localhost:8080/users/4/age/33
     public ResponseEntity<List<User>> updateUserAge(@PathVariable("id") int id, @PathVariable("age") int age) {
         //根據id改年齡
         for (User user : users) {
@@ -126,6 +150,11 @@ public record UserController() {
     }
 
     @PatchMapping("/updateUserNameByRequestBody")
+    //http://localhost:8080/users/updateUserNameByRequestBody
+    //    {
+    //        "id":4,
+    //            "name":"test-Patch"
+    //    }
     public ResponseEntity<List<User>> updateUserAgeByRequestBody(@RequestBody Map<String, Object> requestBody) {
         //根據id改姓名
         int findId = (int)requestBody.get("id");
