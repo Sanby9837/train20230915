@@ -92,8 +92,8 @@ public record UserController() {
         return ResponseEntity.ok(users);
     }
 
-    @PatchMapping("/users/{id}/age/{age}")
-    public ResponseEntity<List<User>> updateUserAge(@PathVariable int id, @PathVariable int age) {
+    @PatchMapping("/{id}/age/{age}")
+    public ResponseEntity<List<User>> updateUserAge(@PathVariable("id") int id, @PathVariable("age") int age) {
         for (User user : users) {
             if (user.getId() == id) {
                 user.setAge(age);
