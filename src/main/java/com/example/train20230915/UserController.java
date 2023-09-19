@@ -56,6 +56,17 @@ public record UserController() {
         return ResponseEntity.ok(names);
     }
 
+    @GetMapping("/findUserByRequestBody")
+    public ResponseEntity<List<User>> findUserByRequestBody(@RequestBody Map<String, Integer> requestBody) {
+        int age = requestBody.get("age");
+
+        List<User> findUsers = users.stream()
+                .filter(user -> user.getAge() == age)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(findUsers);
+    }
+
     @PostMapping
     public ResponseEntity<List<User>> create(@RequestBody User request) {
         //想讓ID是最大號塞進去，所以不管request ID是多少，都重新確認最大號ID+1
@@ -92,8 +103,19 @@ public record UserController() {
         return ResponseEntity.ok(users);
     }
 
+    @DeleteMapping("/DeleteUserByRequestBody")
+    public ResponseEntity<List<User>> DeleteMapping(@RequestBody User request) {
+        // 根據ID刪除user
+        users = users.stream()
+                .filter(user -> user.getId() != request.getId())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
+    }
+
     @PatchMapping("/{id}/age/{age}")
     public ResponseEntity<List<User>> updateUserAge(@PathVariable("id") int id, @PathVariable("age") int age) {
+        //根據id改年齡
         for (User user : users) {
             if (user.getId() == id) {
                 user.setAge(age);
@@ -101,6 +123,26 @@ public record UserController() {
             }
         }
         return ResponseEntity.ok(users);
+    }
+
+    @PatchMapping("/updateUserNameByRequestBody")
+    public ResponseEntity<List<User>> updateUserAgeByRequestBody(@RequestBody Map<String, Object> requestBody) {
+        //根據id改姓名
+        int findId = (int)requestBody.get("id");
+        String newName = (String)requestBody.get("name");
+
+        for (User user : users) {
+            if (user.getId() == findId) {
+                user.setName(newName);
+                break;
+            }
+        }
+
+        List<User> showUsers = users.stream()
+                .filter(user -> user.getId() == findId)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(showUsers);
     }
 }
 
