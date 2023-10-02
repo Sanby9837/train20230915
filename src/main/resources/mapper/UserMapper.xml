@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.UserMapper">
+
+    <!-- 根據用戶ID查詢用戶資訊 -->
+    <select id="getUserById" resultType="com.example.User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <!-- 插入新用戶資訊 -->
+    <insert id="insertUser" parameterType="com.example.User">
+        INSERT INTO users (id, name, age) VALUES (#{id}, #{name}, #{age})
+    </insert>
+
+    <!-- 更新用戶資訊 -->
+    <update id="updateUser" parameterType="com.example.User">
+        UPDATE users SET name = #{name}, age = #{age} WHERE id = #{id}
+    </update>
+
+    <!-- 刪除用戶資訊 -->
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+</mapper>
